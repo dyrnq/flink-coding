@@ -23,5 +23,6 @@ flink-coding-1.0.0.jar \
 --s3.endpoint http://192.168.1.131:19000 \
 --aws.region us-east-1 \
 --aws.accessKeyId xxxxxx \
---aws.secretAccessKey xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+--aws.secretAccessKey xxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
+--sql "select * from rest_catalog.testdb.my_table;"
 ```

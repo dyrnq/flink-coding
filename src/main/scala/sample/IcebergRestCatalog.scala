@@ -14,7 +14,7 @@ object IcebergRestCatalog {
     val s3Endpoint = params.get("s3.endpoint", "")
     val awsAccessKeyId = params.get("aws.accessKeyId", "")
     val awsSecretAccessKey = params.get("aws.secretAccessKey", "")
-
+    val sql = params.get("sql", "")
 //    val awsRegion = System.getProperty("aws.region", "us-east-1")
 //    val awsAccessKeyId = System.getProperty("aws.accessKeyId", "default_value")
 //    val awsSecretAccessKey = System.getProperty("aws.secretAccessKey", "default_value")
@@ -51,14 +51,14 @@ object IcebergRestCatalog {
         |SHOW catalogs;
             """.stripMargin).print()
 
-    tableEnv.executeSql(
-      """
-        |SHOW catalogs;
-            """.stripMargin).print()
+//    tableEnv.executeSql(
+//      """
+//        |SHOW catalogs;
+//            """.stripMargin).print()
 
     tableEnv.executeSql(
-      """
-        |select * from rest_catalog.testdb.my_table;
+      s"""
+        |$sql
             """.stripMargin).print()
 
 
