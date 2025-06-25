@@ -9,6 +9,9 @@
 ### flink run
 
 ### IcebergRestCatalog
+
+[spark ver](https://github.com/dyrnq/spark-scala-example/blob/main/src/main/scala/sample/IcebergRestSimple.scala)
+
 ```bash
 ## optional curl jar file from remote 
 curl -o flink-coding-1.0.0.jar -fsSL# http://192.168.1.171:13000/target/flink-coding-1.0.0.jar
