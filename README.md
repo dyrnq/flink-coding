@@ -18,7 +18,6 @@ run \
 --target remote \
 --class sample.IcebergRestCatalog \
 flink-coding-1.0.0.jar \
---user.timezone Asia/Shanghai \
 --rest.uri http://192.168.1.152:9001/iceberg \
 --s3.endpoint http://192.168.1.131:19000 \
 --aws.region us-east-1 \
