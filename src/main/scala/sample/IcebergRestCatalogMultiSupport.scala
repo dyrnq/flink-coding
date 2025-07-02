@@ -3,7 +3,6 @@ package sample
 import org.apache.flink.api.java.utils.ParameterTool
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.table.api.{EnvironmentSettings, TableEnvironment}
-
 object IcebergRestCatalogMultiSupport {
 
 
@@ -66,6 +65,15 @@ object IcebergRestCatalogMultiSupport {
         |SHOW catalogs;
             """.stripMargin).print()
 
+    tableEnv.executeSql(
+      """
+        |CREATE DATABASE IF NOT EXISTS foo_rest_catalog.foo;
+            """.stripMargin).print()
+
+    tableEnv.executeSql(
+      """
+        |CREATE DATABASE IF NOT EXISTS bar_rest_catalog.bar;
+            """.stripMargin).print()
 
     tableEnv.executeSql(
       """
@@ -76,6 +84,49 @@ object IcebergRestCatalogMultiSupport {
       """
         |SHOW DATABASES from bar_rest_catalog;
             """.stripMargin).print()
+
+    tableEnv.executeSql("USE CATALOG foo_rest_catalog;").print();
+    tableEnv.executeSql("USE foo;").print();
+
+    tableEnv.executeSql(
+      """
+        |CREATE TABLE IF NOT EXISTS foo_table (
+        |  id INT,
+        |  data STRING
+        |);
+        |""".stripMargin
+    ).print()
+
+    tableEnv.executeSql(
+      """
+        |INSERT INTO foo_table (id, data) VALUES (1, 'data1');
+        |""".stripMargin
+    ).print()
+
+    tableEnv.executeSql("USE CATALOG bar_rest_catalog;").print();
+    tableEnv.executeSql("USE bar;").print();
+    tableEnv.executeSql(
+      """
+        |CREATE TABLE IF NOT EXISTS bar_table (
+        |  id INT, data STRING,foo_id INT
+        |);
+        |""".stripMargin
+    ).print()
+
+    tableEnv.executeSql(
+      """
+        |INSERT INTO bar_table (id, data, foo_id) VALUES (10, 'bar_data_10',1);
+        |""".stripMargin
+    ).print()
+
+    tableEnv.executeSql(
+      """
+        |SELECT * FROM
+        |bar_rest_catalog.bar.bar_table as bar,
+        |foo_rest_catalog.foo.foo_table as foo
+        |WHERE bar.foo_id=foo.id;
+        |""".stripMargin
+    ).print()
 
 
     tableEnv.executeSql(
