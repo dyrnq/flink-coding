@@ -39,9 +39,8 @@ object IcebergRestCatalog {
          |  'uri'='$restUri',
          |  's3.endpoint'='$s3Endpoint',
          |  'client.region'='$awsRegion',
-         |  'client.credentials-provider'='sample.CustomCredentialProvider',
-         |  'client.credentials-provider.accessKeyId'='$awsAccessKeyId',
-         |  'client.credentials-provider.secretAccessKey'='$awsSecretAccessKey'
+         |  's3.access-key-id'='$awsAccessKeyId',
+         |  's3.secret-access-key'='$awsSecretAccessKey'
          |);
          |""".stripMargin;
     print(createCatalogSql)

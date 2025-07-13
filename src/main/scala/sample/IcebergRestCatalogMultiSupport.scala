@@ -36,9 +36,8 @@ object IcebergRestCatalogMultiSupport {
          |  'prefix' = 'foo',
          |  's3.endpoint'='http://192.168.6.159:9000',
          |  'client.region'='us-east-1',
-         |  'client.credentials-provider'='sample.CustomCredentialProvider',
-         |  'client.credentials-provider.accessKeyId'='vUR3oLMF5ds8gWCP',
-         |  'client.credentials-provider.secretAccessKey'='odWFIZukYrw9dY0G5ezDKMZWbhU0S4oD'
+         |  's3.access-key-id'='vUR3oLMF5ds8gWCP',
+         |  's3.secret-access-key'='odWFIZukYrw9dY0G5ezDKMZWbhU0S4oD'
          |);
          |""".stripMargin
     )
@@ -52,9 +51,8 @@ object IcebergRestCatalogMultiSupport {
          |  'prefix' = 'bar',
          |  's3.endpoint'='http://192.168.6.159:9200',
          |  'client.region'='us-east-1',
-         |  'client.credentials-provider'='sample.CustomCredentialProvider',
-         |  'client.credentials-provider.accessKeyId'='vUR3oLMF5ds8gWCP',
-         |  'client.credentials-provider.secretAccessKey'='odWFIZukYrw9dY0G5ezDKMZWbhU0S4oD'
+         |  's3.access-key-id'='vUR3oLMF5ds8gWCP',
+         |  's3.secret-access-key'='odWFIZukYrw9dY0G5ezDKMZWbhU0S4oD'
          |);
          |""".stripMargin
     )
@@ -91,7 +89,7 @@ object IcebergRestCatalogMultiSupport {
     tableEnv.executeSql(
       """
         |CREATE TABLE IF NOT EXISTS foo_table (
-        |  id INT,
+        |  id INT NOT NULL PRIMARY KEY NOT ENFORCED,
         |  data STRING
         |);
         |""".stripMargin
@@ -108,7 +106,7 @@ object IcebergRestCatalogMultiSupport {
     tableEnv.executeSql(
       """
         |CREATE TABLE IF NOT EXISTS bar_table (
-        |  id INT, data STRING,foo_id INT
+        |  id INT NOT NULL PRIMARY KEY NOT ENFORCED, data STRING,foo_id INT
         |);
         |""".stripMargin
     ).print()
