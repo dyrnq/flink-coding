@@ -1,0 +1,23 @@
+# Flink configuration — override via docker run -v
+# See https://nightlies.apache.org/flink/flink-docs-release-1.20/docs/deployment/config/
+
+# ── S3 / MinIO ──
+s3.endpoint: http://192.168.6.130:19000
+s3.path.style.access: true
+s3.access-key: xxxXXX
+s3.secret-key: xxxXXXxxxXXX
+
+# ── Checkpoint ──
+execution.checkpointing.interval: 10000
+execution.checkpointing.mode: EXACTLY_ONCE
+execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
+state.checkpoints.dir: s3://bigdata/flink-checkpoints/
+state.savepoints.dir: s3://bigdata/flink-checkpoints/savepoints/
+
+# ── Sink / Rest API ──
+rest.port: 8081
+rest.address: 0.0.0.0
+jobmanager.rpc.address: localhost
+
+# ── Classloader ──
+classloader.resolve-order: parent-first
