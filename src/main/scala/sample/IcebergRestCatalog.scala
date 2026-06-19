@@ -9,29 +9,19 @@ object IcebergRestCatalog {
   def main(args: Array[String]): Unit = {
 
     val params = ParameterTool.fromArgs(args)
-    val awsRegion = params.get("aws.region", "us-east-1")
-    val restUri = params.get("rest.uri", "")
-    val s3Endpoint = params.get("s3.endpoint", "")
-    val awsAccessKeyId = params.get("aws.accessKeyId", "")
-    val awsSecretAccessKey = params.get("aws.secretAccessKey", "")
-    val sql = params.get("sql", "")
-//    val awsRegion = System.getProperty("aws.region", "us-east-1")
-//    val awsAccessKeyId = System.getProperty("aws.accessKeyId", "default_value")
-//    val awsSecretAccessKey = System.getProperty("aws.secretAccessKey", "default_value")
-//    val s3Endpoint = System.getProperty("s3.endpoint", "default_value")
-//    val restUri = System.getProperty("rest.uri", "default_value")
-
+    val awsRegion = params.get("aws.region", Constants.s3Region)
+    val restUri = params.get("rest.uri", Constants.icebergRestUri1)
+    val s3Endpoint = params.get("s3.endpoint", Constants.s3Endpoint)
+    val awsAccessKeyId = params.get("aws.accessKeyId", Constants.s3AccessKey)
+    val awsSecretAccessKey = params.get("aws.secretAccessKey", Constants.s3SecretKey)
+    val sql = params.get("sql", "select * from rest_catalog.testdb.my_table;")
 
     val settings = EnvironmentSettings.newInstance().inStreamingMode()
       .withConfiguration(setConf())
-      .build() //读设置
+      .build()
     val tableEnv = TableEnvironment.create(settings)
-    val config = tableEnv.getConfig;
 
-    config.set("key", "value")
-    config.set("anotherKey", "anotherValue")
-
-    val createCatalogSql=
+    val createCatalogSql =
       s"""
          |CREATE CATALOG rest_catalog WITH (
          |  'type'='iceberg',
@@ -42,25 +32,11 @@ object IcebergRestCatalog {
          |  's3.access-key-id'='$awsAccessKeyId',
          |  's3.secret-access-key'='$awsSecretAccessKey'
          |);
-         |""".stripMargin;
+         |""".stripMargin
     print(createCatalogSql)
     tableEnv.executeSql(createCatalogSql)
-    tableEnv.executeSql(
-      """
-        |SHOW catalogs;
-            """.stripMargin).print()
-
-//    tableEnv.executeSql(
-//      """
-//        |SHOW catalogs;
-//            """.stripMargin).print()
-
-    tableEnv.executeSql(
-      s"""
-        |$sql
-            """.stripMargin).print()
-
-
+    tableEnv.executeSql("SHOW catalogs;").print()
+    tableEnv.executeSql(s"$sql").print()
   }
 
   private def setConf(): Configuration = {

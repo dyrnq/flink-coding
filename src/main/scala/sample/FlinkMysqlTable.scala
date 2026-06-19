@@ -9,17 +9,16 @@ object FlinkMysqlTable {
   def main(args: Array[String]): Unit = {
 
     val params = ParameterTool.fromArgs(args)
-
+    val jdbcUrl = params.get("url", Constants.mysqlJdbcUrl + "/test")
+    val username = params.get("username", Constants.mysqlUsername)
+    val password = params.get("password", Constants.mysqlPassword)
 
     val settings = EnvironmentSettings.newInstance().inStreamingMode()
       .withConfiguration(setConf())
-      .build() //读设置
+      .build()
     val tableEnv = TableEnvironment.create(settings)
-    val config = tableEnv.getConfig;
 
-
-
-    val createCatalogSql=
+    val createCatalogSql =
       s"""
          |CREATE TABLE t_member (
          |  id                BIGINT,
@@ -27,29 +26,19 @@ object FlinkMysqlTable {
          |  password          STRING
          |) WITH (
          |  'connector' = 'jdbc',
-         |  'url' = 'jdbc:mysql://192.168.6.13:3306/test',
+         |  'url' = '$jdbcUrl',
          |  'table-name' = 't_member',
          |  'driver' = 'com.mysql.jdbc.Driver',
-         |  'username' = 'root',
-         |  'password' = 'root',
+         |  'username' = '$username',
+         |  'password' = '$password',
          |  'lookup.cache.max-rows' = '1',
          |  'lookup.cache.ttl' = '0s'
          |);
-         |""".stripMargin;
+         |""".stripMargin
     print(createCatalogSql)
     tableEnv.executeSql(createCatalogSql)
-    tableEnv.executeSql(
-      """
-        |SHOW tables;
-            """.stripMargin).print()
-    tableEnv.executeSql(
-      """
-        |select * from t_member;
-            """.stripMargin).print()
-
-
-
-
+    tableEnv.executeSql("SHOW tables;").print()
+    tableEnv.executeSql("select * from t_member;").print()
   }
 
   private def setConf(): Configuration = {

@@ -9,42 +9,32 @@ object FlinkMysqlCatalog {
   def main(args: Array[String]): Unit = {
 
     val params = ParameterTool.fromArgs(args)
-    val default_database = params.get("default-database", "test")
-    val base_url = params.get("base-url", "")
-    val username = params.get("username", "")
-    val password = params.get("password", "")
+    val defaultDatabase = params.get("default-database", "test")
+    val baseUrl = params.get("base-url", Constants.mysqlJdbcUrl)
+    val username = params.get("username", Constants.mysqlUsername)
+    val password = params.get("password", Constants.mysqlPassword)
     val sql = params.get("sql", "")
-    val catalog_name = params.get("catalog-name", "mysql_catalog")
-    val catalog_type = params.get("catalog-type", "jdbc")
+    val catalogName = params.get("catalog-name", "mysql_catalog")
+    val catalogType = params.get("catalog-type", "jdbc")
+
     val settings = EnvironmentSettings.newInstance().inStreamingMode()
       .withConfiguration(setConf())
-      .build() //读设置
+      .build()
     val tableEnv = TableEnvironment.create(settings)
-    val config = tableEnv.getConfig;
 
-
-
-    val createCatalogSql=
+    val createCatalogSql =
       s"""
-         |CREATE CATALOG $catalog_name WITH (
-         |  'type' = '$catalog_type',
-         |  'default-database' = '$default_database',
-         |  'base-url' = '$base_url',
+         |CREATE CATALOG $catalogName WITH (
+         |  'type' = '$catalogType',
+         |  'default-database' = '$defaultDatabase',
+         |  'base-url' = '$baseUrl',
          |  'username' = '$username',
          |  'password' = '$password'
          |);
-         |""".stripMargin;
+         |""".stripMargin
     print(createCatalogSql)
     tableEnv.executeSql(createCatalogSql)
-
-    tableEnv.executeSql(
-      s"""
-        |$sql
-            """.stripMargin).print()
-
-
-
-
+    tableEnv.executeSql(s"$sql").print()
   }
 
   private def setConf(): Configuration = {
