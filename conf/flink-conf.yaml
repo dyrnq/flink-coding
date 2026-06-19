@@ -21,3 +21,6 @@ jobmanager.rpc.address: localhost
 
 # ── Classloader ──
 classloader.resolve-order: parent-first
+
+# ── JVM ──
+env.java.opts: "-XX:MaxMetaspaceSize=512m -XX:+IgnoreUnrecognizedVMOptions"
