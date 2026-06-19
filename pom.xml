@@ -14,11 +14,11 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <scala.version>2.12.20</scala.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <scala.version>2.12.21</scala.version>
     <scala.binary.version>2.12</scala.binary.version>
-    <flink.version>1.20.1</flink.version>
+    <flink.version>1.20.5</flink.version>
     <hadoop.version>3.3.6</hadoop.version>
   </properties>
 
@@ -57,7 +57,7 @@
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-connector-kafka</artifactId>
-      <version>3.3.0-1.20</version>
+      <version>3.4.0-1.20</version>
     </dependency>
     <dependency>
       <groupId>org.apache.flink</groupId>
@@ -91,13 +91,13 @@
     <dependency>
       <groupId>org.apache.iceberg</groupId>
       <artifactId>iceberg-flink-runtime-1.20</artifactId>
-      <version>1.9.1</version>
+      <version>1.11.0</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.iceberg</groupId>
       <artifactId>iceberg-aws-bundle</artifactId>
-      <version>1.9.1</version>
+      <version>1.11.0</version>
     </dependency>
 
   </dependencies>
@@ -131,7 +131,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>3.6.2</version>
         <executions>
           <!-- Run shade goal on package phase -->
           <execution>
